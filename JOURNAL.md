@@ -25,13 +25,12 @@ The issue is the failure of the parser's section detection logic in ingestion/pa
 **Reproduction commit link:** https://github.com/Syoko3/pathreview/commit/1840b5738e8615099fe5e0be56bc7415ac64db5f
 
 **Reproduction summary:**
-[1–2 sentences: How did you reproduce the issue? What did you observe?]
+I reproduced the issue by creating the detect_sections_bug.py to test the reproduction bug logic, and mark the _detect_sections() as a bug in ingestion/parser/resume_parser.py and the related failing tests in tests/unit/test_unit_parser.py. When I run the _detect_sections_bug.py, it returns an empty list, but the expected output has to return "Education" and "Skills" as the list. I also ran the unit tests for the parser again, and confirmed that section headers with leading whitespaces are not detected, so _detect_section() of resume_parser.py will return as an empty list.
 
-
-**PLAN.md link:** [link to PLAN.md in your fork]
+**PLAN.md link:** https://github.com/Syoko3/pathreview/blob/fix/147-leading-whitespace/PLAN.md
 
 **Walkthrough video (recommended):** [link to your Loom video, ≤2 min — recommended, not graded]
 
 **Blockers or open questions:**
-[Anything you're still uncertain about going into Week 9, or leave blank]
+
 
