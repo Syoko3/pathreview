@@ -22,10 +22,11 @@ The issue is the failure of the parser's section detection logic in ingestion/pa
 
 ## Week 8 — Reproduction & solution planning
 
-**Reproduction commit link:** [link to commit documenting the reproduced issue]
+**Reproduction commit link:** https://github.com/Syoko3/pathreview/commit/1840b5738e8615099fe5e0be56bc7415ac64db5f
 
 **Reproduction summary:**
 [1–2 sentences: How did you reproduce the issue? What did you observe?]
+
 
 **PLAN.md link:** [link to PLAN.md in your fork]
 
