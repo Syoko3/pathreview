@@ -1,11 +1,11 @@
 """Tests for resume_parser.py"""
 
-import pytest
-from unittest.mock import Mock, patch, MagicMock
-from io import BytesIO
+from unittest.mock import Mock, patch
 
-from ingestion.parsers.resume_parser import ResumeParser
+import pytest
+
 from ingestion.parsers.base import ParseResult
+from ingestion.parsers.resume_parser import ResumeParser
 
 
 @pytest.mark.unit
@@ -17,6 +17,7 @@ class TestResumeParser:
         """Create a ResumeParser instance."""
         return ResumeParser()
 
+    # Failed due to the leading whitespace bug in _detect_sections
     def test_parse_single_column_resume_text(self, parser, sample_resume_text):
         """Test parsing a standard single-column resume text."""
         result = parser.parse(sample_resume_text)
@@ -33,6 +34,7 @@ class TestResumeParser:
             "skills" in s for s in detected_lower
         )
 
+    # Failed due to the leading whitespace bug in _detect_sections
     def test_parse_resume_no_work_experience(self, parser):
         """Test parsing a resume with no work experience section - handles gracefully."""
         resume_no_work = """
@@ -123,6 +125,7 @@ class TestResumeParser:
             exc_info.value
         )
 
+    # Failed due to the leading whitespace bug in _detect_sections
     def test_detect_sections(self, parser):
         """Test section detection in resume text."""
         text = """

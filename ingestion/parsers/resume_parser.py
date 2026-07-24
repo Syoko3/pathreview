@@ -5,7 +5,6 @@ from pypdf import PdfReader
 
 from .base import BaseParser, ParseResult
 
-
 SECTION_HEADERS = {
     "experience",
     "education",
@@ -124,6 +123,7 @@ class ResumeParser(BaseParser):
 
         return text.strip()
 
+    # Bug here: Leading whitespace in section headers cause the detection to fail.
     def _detect_sections(self, text: str) -> list[str]:
         """Detect common resume sections from text."""
         detected = []
