@@ -123,14 +123,13 @@ class ResumeParser(BaseParser):
 
         return text.strip()
 
-    # Bug here: Leading whitespace in section headers cause the detection to fail.
     def _detect_sections(self, text: str) -> list[str]:
         """Detect common resume sections from text."""
         detected = []
         text_lower = text.lower()
 
         for section in SECTION_HEADERS:
-            # Look for section header patterns
+            # Look for section header patterns, including leading whitespaces
             patterns = [
                 rf"^[ \t]*{re.escape(section)}\s*$",
                 rf"^[ \t]*{re.escape(section)}\s*[:|-]",
