@@ -33,4 +33,34 @@ I reproduced the issue by creating the detect_sections_bug.py to test the reprod
 
 **Blockers or open questions:**
 
+---
 
+## Week 9 — Solution building & PR submission
+
+### Check-in 1 (mid-week)
+
+**Current progress:**
+I implemented the fix of the _detect_sections() of the ingestion/parsers/resume_parser.py by updating the regex of the section header patterns. After that, I confirmed the bug is fixed by running the unit test of the resume parser (tests/unit/test_resume_parser.py) to verify the three related failing tests are passed. I also ran the reproduction script and verified that the sections are correctly detected. I added the test cases for the leading whitespaces and the edge cases (.e.g. non-indented headers, substring words, etc.) in the test file, and verified that these tests also passed. I finished all of the sub-tasks from PLAN.md.
+
+**Next steps:**
+I have to open the draft pull request on GitHub and document pre-existing make check / make test-unit baseline failures in the PR description. I have to share the Draft PR link to the peer/mentor, and address any review feedback. I have to look the PR thread every day at least once. After addressing any review feedback, I have to update `JOURNAL.md` with Check-in 2, and mark PR as "Ready for review".
+
+**Blockers:**
+
+---
+
+### Check-in 2 (end of week)
+
+**PR link:** [link to your submitted pull request]
+
+**Branch:** [the branch name you worked on, e.g. `fix/123-short-description`]
+
+**What you built:**
+[1–3 sentences summarizing what your fix does and how it works]
+
+**Tests added or updated:**
+[Which test files did you touch? What do they cover?]
+
+**Self-review confirmation:** [ ] make check passes  [ ] make test-unit passes
+
+**Draft PR feedback received from:** [name or Slack handle, or "none"]
