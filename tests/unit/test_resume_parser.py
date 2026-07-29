@@ -17,7 +17,6 @@ class TestResumeParser:
         """Create a ResumeParser instance."""
         return ResumeParser()
 
-    # Failed due to the leading whitespace bug in _detect_sections
     def test_parse_single_column_resume_text(self, parser, sample_resume_text):
         """Test parsing a standard single-column resume text."""
         result = parser.parse(sample_resume_text)
@@ -34,7 +33,6 @@ class TestResumeParser:
             "skills" in s for s in detected_lower
         )
 
-    # Failed due to the leading whitespace bug in _detect_sections
     def test_parse_resume_no_work_experience(self, parser):
         """Test parsing a resume with no work experience section - handles gracefully."""
         resume_no_work = """
@@ -125,7 +123,6 @@ class TestResumeParser:
             exc_info.value
         )
 
-    # Failed due to the leading whitespace bug in _detect_sections
     def test_detect_sections(self, parser):
         """Test section detection in resume text."""
         text = """
@@ -145,6 +142,61 @@ class TestResumeParser:
         assert any("experience" in s for s in sections_lower)
         assert any("education" in s for s in sections_lower)
         assert any("skills" in s for s in sections_lower)
+
+    # Edge Case: Indented headers with leading whitespace should still be detected
+    def test_detect_sections_indented_headers(self, parser):
+        """Mixed indentation (spaces and tabs) — headers still detected."""
+        text = "\tExperience:\n    Education:\n        Skills: Python"
+        sections = [s.lower() for s in parser._detect_sections(text)]
+        assert "experience" in sections
+        assert "education" in sections
+        assert "skills" in sections
+
+    # Edge Case: Non-indented headers should still be detected
+    def test_detect_sections_non_indented_headers(self, parser):
+        """Flush-left headers keep working (no regression)."""
+        text = "Experience:\nEducation:\nSkills: Python"
+        sections = [s.lower() for s in parser._detect_sections(text)]
+        assert "experience" in sections
+        assert "education" in sections
+        assert "skills" in sections
+
+    # Edge Case: Section words inside sentences should not be detected
+    def test_detect_sections_ignores_midsentence_words(self, parser):
+        """A section word inside a sentence is not a header."""
+        text = "I gained a lot of experience and skills at my last job."
+        sections = [s.lower() for s in parser._detect_sections(text)]
+        assert "experience" not in sections
+        assert "skills" not in sections
+
+    # Edge Case: Section words as substrings of other words should not be detected
+    def test_detect_sections_ignores_substring_words(self, parser):
+        """Words that merely contain a header as a substring are not detected."""
+        text = "Experienced Engineer\nSkillset overview"
+        sections = [s.lower() for s in parser._detect_sections(text)]
+        assert "experience" not in sections
+        assert "skills" not in sections
+
+    # Edge Case: Headers on the very first line should still be detected
+    def test_detect_sections_first_line_header(self, parser):
+        """A header on the very first line (no preceding newline) is detected."""
+        text = "Skills: Python\nMore content here"
+        sections = [s.lower() for s in parser._detect_sections(text)]
+        assert "skills" in sections
+
+    # Edge Case: Headers with trailing whitespace should still be detected
+    def test_detect_sections_trailing_whitespace(self, parser):
+        """A header with trailing whitespace is still detected."""
+        text = "Education   \n- B.S. Computer Science"
+        sections = [s.lower() for s in parser._detect_sections(text)]
+        assert "education" in sections
+
+    # Edge Case: Repeated headers should be detected only once
+    def test_detect_sections_deduplicates(self, parser):
+        """A repeated header is reported only once."""
+        text = "Skills: Python\nSkills: JavaScript"
+        sections = parser._detect_sections(text)
+        assert sections.count("Skills") == 1
 
     def test_strip_markdown_syntax(self, parser):
         """Test markdown syntax stripping."""
