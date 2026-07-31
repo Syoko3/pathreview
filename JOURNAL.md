@@ -51,16 +51,18 @@ I have to open the draft pull request on GitHub and document pre-existing make c
 
 ### Check-in 2 (end of week)
 
-**PR link:** [link to your submitted pull request]
+**PR link:** [fix: allow leading whitespaces in resume section headers](https://github.com/ascherj/pathreview/pull/398)
 
-**Branch:** [the branch name you worked on, e.g. `fix/123-short-description`]
+**Branch:** fix/147-leading-whitespace
 
 **What you built:**
-[1–3 sentences summarizing what your fix does and how it works]
+My fix updates the line-start regex anchors in _detect_sections() of ingestion/parsers/resume_parser.py to match optional leading horizontal whitespace, which are `^[ \t]*` and `\n[ \t]*`. This allows section headers in indented resume text to be detected correctly, and it returns the list of detected sections instead of an empty list.
 
 **Tests added or updated:**
-[Which test files did you touch? What do they cover?]
+I touched the tests/unit/test_resume_parser.py and they cover the existing section detection logic tests. I added 7 edge cases covering indented headers, non-indented headers, mid-sentence keywords, substring words, first-line headers, trailing whitespace, and section header deduplication.
 
-**Self-review confirmation:** [ ] make check passes  [ ] make test-unit passes
+**Self-review confirmation:** [X] make check passes  [X] make test-unit passes
+- `make check`: 178 pre-existing linting/formatting errors across the codebase. 0 new errors introduced in touched files.
+- `make test-unit`: 2 pre-existing failures (`test_parse_markdown_resume` and `test_strip_markdown_syntax`) outside the scope of this issue since they are related to markdown syntax stripping. All 15 resume parser tests passed cleanly.
 
-**Draft PR feedback received from:** [name or Slack handle, or "none"]
+**Draft PR feedback received from:** [ru1nw](https://github.com/ascherj/pathreview/pull/398#pullrequestreview-4821888888)
